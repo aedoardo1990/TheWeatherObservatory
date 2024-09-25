@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:The_Weather_Observatory"
+             xmlns:converters="clr-namespace:The_Weather_Observatory.Converters"
+             x:Class="The_Weather_Observatory.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converters:TextToImageConverter x:Key="TextToImageConverter"></converters:TextToImageConverter>
+            <converters:TextToColorConverter x:Key="TextToColorConverter"></converters:TextToColorConverter>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}">
+        <StackLayout>
+            <Frame CornerRadius="10"
+                   Margin="22,7,22,-15"
+                   Padding="0">
+                <SearchBar SearchCommand="{Binding SearchCommand}"
+                           x:Name="search"
+                           SearchCommandParameter="{Binding Text, Source={x:Reference search}}"
+                           BackgroundColor="White"
+                           Placeholder="Enter city:">
+                </SearchBar>
+            </Frame>
+            <Frame Margin="10"
+                   BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
+                   VerticalOptions="FillAndExpand"
+                   CornerRadius="10"
+                   BorderColor="Transparent">
+                <StackLayout>
+                    <Label Text="{Binding Data.timezone, StringFormat='⚲ {0}'}"
+                           HorizontalTextAlignment="Left"
+                           FontSize="35"
+                           TextColor="White"/>
+                    <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                    <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"
+                           HorizontalTextAlignment="Left"
+                           FontSize="80"
+                           TextColor="White"/>
+                    <Label Text="{Binding Data.current.weather[0].description}"
+                           Margin="0,0.5,0,0"
+                           FontSize="Title"
+                           TextColor="White"
+                           HorizontalTextAlignment="Left"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="90"></ColumnDefinition>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Label Text="{Binding Data.daily[0].temp.max, StringFormat='↑ {0}°C'}"
+                           HorizontalTextAlignment="Start"
+                           FontSize="Medium"
+                           TextColor="White"
+                           Grid.Column="0"/>
+                        <Label Text="{Binding Data.daily[0].temp.min, StringFormat='↓ {0}°C'}"
+                           HorizontalTextAlignment="Start"
+                           FontSize="Medium"
+                           TextColor="White"
+                           Grid.Column="1"/>
+                    </Grid>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </Grid>
+</ContentPage>
