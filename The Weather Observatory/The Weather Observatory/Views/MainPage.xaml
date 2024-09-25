@@ -20,7 +20,7 @@
                            x:Name="search"
                            SearchCommandParameter="{Binding Text, Source={x:Reference search}}"
                            BackgroundColor="White"
-                           Placeholder="Enter city:">
+                           Placeholder="Enter location or coordinates:">
                 </SearchBar>
             </Frame>
             <Frame Margin="10"

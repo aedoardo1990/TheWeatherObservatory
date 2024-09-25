@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -32,6 +33,7 @@ namespace The_Weather_Observatory.ViewModels
         {
             SearchCommand = new Command(async (searchTerm) =>
             {
+                // to get ApiKey
                 string apiKey = await SecureStorage.GetAsync("ApiKey");
                 if (string.IsNullOrEmpty(apiKey))
                 {
@@ -39,20 +41,25 @@ namespace The_Weather_Observatory.ViewModels
                     return;
                 }
 
-                var input = searchTerm as string;
-                if (input != null)
+                try
                 {
-                    var coords = input.Split(',');
-                    if (coords.Length == 2 &&
-                        double.TryParse(coords[0], out double lat) &&
-                        double.TryParse(coords[1], out double lon))
+                    var input = searchTerm as string;
+                    var locations = await Geocoding.GetLocationsAsync(input);
+                    var location = locations?.FirstOrDefault();
+                    var lat = location.Latitude;
+                    var lon = location.Longitude;
+                    if (input != null)
                     {
                         await GetData($"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely");
                     }
-                    else
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Error", "Please enter valid coordinates in the format 'lat,lon'.", "OK");
-                    }
+                }
+                catch (FeatureNotSupportedException fnsEx)
+                {
+                    // Feature not supported on device
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception that may have occurred in geocoding
                 }
             });
         }
@@ -75,4 +82,4 @@ namespace The_Weather_Observatory.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
-}   
+}
