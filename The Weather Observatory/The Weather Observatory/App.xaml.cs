@@ -20,18 +20,18 @@ namespace The_Weather_Observatory
             // _ = StoreApiKeyAsync();
         }
 
-        //private async Task StoreApiKeyAsync()
-        //{
-        //    try
-        //    {
-        //        await SecureStorage.SetAsync("ApiKey", "your-api-key");  // Replace "11" with your actual API key
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        // Handle any exceptions that might occur when storing the key
-        //        Console.WriteLine($"Error storing API key");
-        //    }
-        //}
+        private async Task StoreApiKeyAsync()
+        {
+            try
+            {
+                await SecureStorage.SetAsync("ApiKey", "your-api-key");  // Replace "your-api-key" with your actual API key
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions that might occur when storing the key
+                Console.WriteLine($"Error storing API key");
+            }
+        }
         protected override void OnSleep()
         {
         }
