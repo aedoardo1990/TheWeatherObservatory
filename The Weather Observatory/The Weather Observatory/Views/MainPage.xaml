@@ -23,6 +23,10 @@
                            Placeholder="Enter location or coordinates:">
                 </SearchBar>
             </Frame>
+
+            <Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"/>
+            <Label x:Name="resultLocation"/>
+            
             <Frame Margin="10"
                    BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                    VerticalOptions="FillAndExpand"

@@ -28,7 +28,23 @@ namespace The_Weather_Observatory.ViewModels
             }
         }
 
+        private bool _isLoading;
+        public bool IsLoading
+        {
+            get => _isLoading;
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // command to get weather by location
         public ICommand SearchCommand { get; set; }
+
+        // command to get weather by GPS location
+        public ICommand GetCurrentLocationWeatherCommand { get; set; }
+
         public MainPageViewModel()
         {
             SearchCommand = new Command(async (searchTerm) =>
@@ -41,6 +57,7 @@ namespace The_Weather_Observatory.ViewModels
                     return;
                 }
 
+                // try catch block to look for location
                 try
                 {
                     var input = searchTerm as string;
@@ -62,7 +79,63 @@ namespace The_Weather_Observatory.ViewModels
                     // Handle exception that may have occurred in geocoding
                 }
             });
+
+            GetCurrentLocationWeatherCommand = new Command(async () => await GetCurrentLocationWeather());
+
         }
+        public async Task GetCurrentLocationWeather()
+        {
+            IsLoading = true;
+
+            try
+            {
+                var location = await Geolocation.GetLastKnownLocationAsync();
+                if (location == null)
+                {
+                    location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30)));
+                }
+
+                if (location != null)
+                {
+                    // to get ApiKey
+                    string apiKey = await SecureStorage.GetAsync("ApiKey");
+                    if (string.IsNullOrEmpty(apiKey))
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Error", "API key not found.", "OK");
+                        return;
+                    }
+                    // try catch block to look for location
+                    try
+                    {
+                        location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30)));
+                        var lat = location.Latitude;
+                        var lon = location.Longitude;
+                        await GetData($"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely");
+                    }
+                    catch (FeatureNotSupportedException fnsEx)
+                    {
+                        // Feature not supported on device
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle exception that may have occurred in geocoding
+                    }
+                }
+                else
+                {
+                    await Application.Current.MainPage.DisplayAlert("Error", "Unable to get current location.", "OK");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
         public async Task GetData(string url)
         {
             var client = new HttpClient();
