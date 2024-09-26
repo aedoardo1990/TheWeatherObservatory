@@ -13,9 +13,9 @@
     </ContentPage.Resources>
     <Grid BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}">
         <StackLayout>
-            <Frame CornerRadius="10"
-                   Margin="22,7,22,-15"
-                   Padding="0">
+            <Frame CornerRadius="50"
+                   Margin="22,10,22,-15"
+                   Padding="-2">
                 <SearchBar SearchCommand="{Binding SearchCommand}"
                            x:Name="search"
                            SearchCommandParameter="{Binding Text, Source={x:Reference search}}"
@@ -24,9 +24,12 @@
                 </SearchBar>
             </Frame>
 
-            <Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"/>
-            <Label x:Name="resultLocation"/>
-            
+            <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
+                    CornerRadius="10"
+                    Margin="22,1,22,-15"
+                    Padding="0"/>
+            <Label x:Name="resultLocation"/>-->
+
             <Frame Margin="10"
                    BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                    VerticalOptions="FillAndExpand"
@@ -36,6 +39,10 @@
                     <Label Text="{Binding Data.timezone, StringFormat='⚲ {0}'}"
                            HorizontalTextAlignment="Left"
                            FontSize="35"
+                           TextColor="White"/>
+                    <Label Text="{Binding Data.current.dt, StringFormat='{0:dddd, d MMMM yyyy HH:mm}'}"
+                           HorizontalTextAlignment="Left"
+                           FontSize="10"
                            TextColor="White"/>
                     <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
                     <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"

@@ -17,13 +17,13 @@ namespace The_Weather_Observatory
         public MainPage()
         {
             InitializeComponent();
-            _viewModel = new MainPageViewModel();
+            //_viewModel = new MainPageViewModel();
             this.BindingContext = new MainPageViewModel();
         }
 
-        async void Button_Clicked(System.Object sender, System.EventArgs e)
-        {
-            await _viewModel.GetCurrentLocationWeather();
-        }
+        //async void Button_Clicked(System.Object sender, System.EventArgs e)
+        //{
+        //    await _viewModel.GetCurrentLocationWeather();
+        //}
     }
 }

@@ -50,6 +50,9 @@ namespace The_Weather_Observatory.ViewModels
             SearchCommand = new Command<string>(async (searchTerm) => await SearchLocation(searchTerm));
 
             GetCurrentLocationWeatherCommand = new Command(async () => await GetCurrentLocationWeather());
+
+            // this allows the app to retrive weather data immediately for current location
+            Task.Run(async () => await GetCurrentLocationWeather());
         }
 
         private async Task SearchLocation(string searchTerm)
@@ -90,7 +93,7 @@ namespace The_Weather_Observatory.ViewModels
                 var location = await Geolocation.GetLastKnownLocationAsync();
                 if (location == null)
                 {
-                    location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30)));
+                    location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10)));
                 }
 
                 if (location != null)
