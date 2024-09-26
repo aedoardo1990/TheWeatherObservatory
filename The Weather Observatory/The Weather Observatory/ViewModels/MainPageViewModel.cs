@@ -47,42 +47,40 @@ namespace The_Weather_Observatory.ViewModels
 
         public MainPageViewModel()
         {
-            SearchCommand = new Command(async (searchTerm) =>
-            {
-                // to get ApiKey
-                string apiKey = await SecureStorage.GetAsync("ApiKey");
-                if (string.IsNullOrEmpty(apiKey))
-                {
-                    await Application.Current.MainPage.DisplayAlert("Error", "API key not found.", "OK");
-                    return;
-                }
-
-                // try catch block to look for location
-                try
-                {
-                    var input = searchTerm as string;
-                    var locations = await Geocoding.GetLocationsAsync(input);
-                    var location = locations?.FirstOrDefault();
-                    var lat = location.Latitude;
-                    var lon = location.Longitude;
-                    if (input != null)
-                    {
-                        await GetData($"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely");
-                    }
-                }
-                catch (FeatureNotSupportedException fnsEx)
-                {
-                    // Feature not supported on device
-                }
-                catch (Exception ex)
-                {
-                    // Handle exception that may have occurred in geocoding
-                }
-            });
+            SearchCommand = new Command<string>(async (searchTerm) => await SearchLocation(searchTerm));
 
             GetCurrentLocationWeatherCommand = new Command(async () => await GetCurrentLocationWeather());
-
         }
+
+        private async Task SearchLocation(string searchTerm)
+        {
+            if (string.IsNullOrEmpty(searchTerm))
+                return;
+
+            IsLoading = true;
+
+            try
+            {
+                var input = searchTerm as string;
+                var locations = await Geocoding.GetLocationsAsync(input);
+                var location = locations?.FirstOrDefault();
+                double lat = location.Latitude;
+                double lon = location.Longitude;
+                if (input != null)
+                {
+                    await GetWeatherData(lat, lon);
+                }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+            }
+            finally
+            {
+                IsLoading = false;
+            }
+        }
+
         public async Task GetCurrentLocationWeather()
         {
             IsLoading = true;
@@ -97,29 +95,7 @@ namespace The_Weather_Observatory.ViewModels
 
                 if (location != null)
                 {
-                    // to get ApiKey
-                    string apiKey = await SecureStorage.GetAsync("ApiKey");
-                    if (string.IsNullOrEmpty(apiKey))
-                    {
-                        await Application.Current.MainPage.DisplayAlert("Error", "API key not found.", "OK");
-                        return;
-                    }
-                    // try catch block to look for location
-                    try
-                    {
-                        location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(30)));
-                        var lat = location.Latitude;
-                        var lon = location.Longitude;
-                        await GetData($"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely");
-                    }
-                    catch (FeatureNotSupportedException fnsEx)
-                    {
-                        // Feature not supported on device
-                    }
-                    catch (Exception ex)
-                    {
-                        // Handle exception that may have occurred in geocoding
-                    }
+                    await GetWeatherData(location.Latitude, location.Longitude);
                 }
                 else
                 {
@@ -136,7 +112,20 @@ namespace The_Weather_Observatory.ViewModels
             }
         }
 
-        public async Task GetData(string url)
+        private async Task GetWeatherData(double lat, double lon)
+        {
+            // to get ApiKey
+            string apiKey = await SecureStorage.GetAsync("ApiKey");
+            if (string.IsNullOrEmpty(apiKey))
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", "API key not found.", "OK");
+                return;
+            }
+            string url = $"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely";
+            await GetData(url);
+        }
+
+        private async Task GetData(string url)
         {
             var client = new HttpClient();
             client.BaseAddress = new Uri(url);
