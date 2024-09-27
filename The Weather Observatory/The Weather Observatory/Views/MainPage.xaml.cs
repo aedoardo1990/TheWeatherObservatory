@@ -13,7 +13,7 @@ namespace The_Weather_Observatory
 {
     public partial class MainPage : ContentPage
     {
-        private MainPageViewModel _viewModel;
+        // private MainPageViewModel _viewModel;
         public MainPage()
         {
             InitializeComponent();

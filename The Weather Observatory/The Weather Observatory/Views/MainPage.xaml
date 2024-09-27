@@ -9,6 +9,7 @@
         <ResourceDictionary>
             <converters:TextToImageConverter x:Key="TextToImageConverter"></converters:TextToImageConverter>
             <converters:TextToColorConverter x:Key="TextToColorConverter"></converters:TextToColorConverter>
+            <converters:UnixToDateTimeConverter x:Key="UnixToDateTimeConverter"></converters:UnixToDateTimeConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}">
@@ -40,7 +41,7 @@
                            HorizontalTextAlignment="Left"
                            FontSize="35"
                            TextColor="White"/>
-                    <Label Text="{Binding Data.current.dt, StringFormat='{0:dddd, d MMMM yyyy HH:mm}'}"
+                    <Label Text="{Binding Data.current.dt, Converter={StaticResource UnixToDateTimeConverter}}"
                            HorizontalTextAlignment="Left"
                            FontSize="10"
                            TextColor="White"/>
