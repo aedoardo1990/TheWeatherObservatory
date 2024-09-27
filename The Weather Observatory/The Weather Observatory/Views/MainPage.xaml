@@ -21,7 +21,7 @@
                            x:Name="search"
                            SearchCommandParameter="{Binding Text, Source={x:Reference search}}"
                            BackgroundColor="White"
-                           Placeholder="Enter location or coordinates:">
+                           Placeholder="Enter location or address:">
                 </SearchBar>
             </Frame>
 
@@ -31,7 +31,7 @@
                     Padding="0"/>
             <Label x:Name="resultLocation"/>-->
 
-            <Frame Margin="10"
+            <Frame Margin="10 5 5 5"
                    BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                    VerticalOptions="FillAndExpand"
                    CornerRadius="10"
@@ -43,7 +43,7 @@
                            TextColor="White"/>
                     <Label Text="{Binding Data.current.dt, Converter={StaticResource UnixToDateTimeConverter}}"
                            HorizontalTextAlignment="Left"
-                           FontSize="10"
+                           FontSize="20"
                            TextColor="White"/>
                     <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
                     <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"
@@ -71,6 +71,39 @@
                            TextColor="White"
                            Grid.Column="1"/>
                     </Grid>
+                    <Frame CornerRadius="10" HeightRequest="200" Padding="2">
+                        <ScrollView Orientation="Both" HorizontalScrollBarVisibility="Always">
+                            <StackLayout Orientation="Horizontal"
+                                         HorizontalOptions="Center">
+                                <StackLayout WidthRequest="90">
+                                    <Label Text="{Binding Data.hourly[0].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
+                                    <Image Source="{Binding Data.hourly[0].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                    <Label Text="{Binding Data.hourly[0].temp, StringFormat=' {0}°'}" />
+                                </StackLayout>
+
+                                <StackLayout WidthRequest="90">
+                                    <Label Text="{Binding Data.hourly[1].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
+                                    <Image Source="{Binding Data.hourly[1].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                    <Label Text="{Binding Data.hourly[1].temp, StringFormat=' {0}°'}" />
+                                </StackLayout>
+                                <StackLayout WidthRequest="90">
+                                    <Label Text="{Binding Data.hourly[2].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
+                                    <Image Source="{Binding Data.hourly[2].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                    <Label Text="{Binding Data.hourly[2].temp, StringFormat=' {0}°'}" />
+                                </StackLayout>
+                                <StackLayout WidthRequest="90">
+                                    <Label Text="{Binding Data.hourly[3].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
+                                    <Image Source="{Binding Data.hourly[3].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                    <Label Text="{Binding Data.hourly[3].temp, StringFormat=' {0}°'}" />
+                                </StackLayout>
+                                <StackLayout WidthRequest="90">
+                                    <Label Text="{Binding Data.hourly[4].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
+                                    <Image Source="{Binding Data.hourly[4].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                    <Label Text="{Binding Data.hourly[4].temp, StringFormat=' {0}°'}" />
+                                </StackLayout>
+                            </StackLayout>
+                        </ScrollView>
+                    </Frame>
                 </StackLayout>
             </Frame>
         </StackLayout>
