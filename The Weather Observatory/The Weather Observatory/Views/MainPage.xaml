@@ -14,100 +14,130 @@
     </ContentPage.Resources>
     <Grid BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}">
         <ScrollView>
-        <StackLayout>
-            <Frame CornerRadius="50"
+            <StackLayout>
+                <Frame CornerRadius="50"
                    Margin="22,10,22,-15"
                    Padding="-2">
-                <SearchBar SearchCommand="{Binding SearchCommand}"
+                    <SearchBar SearchCommand="{Binding SearchCommand}"
                            x:Name="search"
                            SearchCommandParameter="{Binding Text, Source={x:Reference search}}"
                            BackgroundColor="White"
                            Placeholder="Enter location or address:">
-                </SearchBar>
-            </Frame>
+                    </SearchBar>
+                </Frame>
 
-            <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
+                <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
                     CornerRadius="10"
                     Margin="22,1,22,-15"
                     Padding="0"/>
             <Label x:Name="resultLocation"/>-->
 
-            <Frame Margin="10"
+                <Frame Margin="10"
                    BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                    VerticalOptions="FillAndExpand"
                    CornerRadius="10"
                    BorderColor="Transparent">
-                <StackLayout>
-                    <Label Text="{Binding Data.timezone, StringFormat='⚲ {0}'}"
+                    <StackLayout>
+                        <Label Text="{Binding Data.timezone, StringFormat='⚲ {0}'}"
                            HorizontalTextAlignment="Left"
                            FontSize="35"
                            TextColor="White"/>
-                    <Label Text="{Binding Data.current.dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                        <Label Text="{Binding Data.current.dt, Converter={StaticResource UnixToDateTimeConverter}}"
                            HorizontalTextAlignment="Left"
                            FontSize="20"
                            TextColor="White"/>
-                    <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                    <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"
+                        <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                        <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"
                            HorizontalTextAlignment="Left"
                            FontSize="80"
                            TextColor="White"/>
-                    <Label Text="{Binding Data.current.weather[0].description}"
+                        <Label Text="{Binding Data.current.weather[0].description}"
                            Margin="0,0.5,0,0"
                            FontSize="Title"
                            TextColor="White"
                            HorizontalTextAlignment="Left"/>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="90"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
-                        </Grid.ColumnDefinitions>
-                        <Label Text="{Binding Data.daily[0].temp.max, StringFormat='↑ {0}°C'}"
+                        <Grid Margin="0,2,0,25">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="90"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+                            <Label Text="{Binding Data.daily[0].temp.max, StringFormat='↑ {0}°C'}"
                            HorizontalTextAlignment="Start"
                            FontSize="Medium"
                            TextColor="White"
                            Grid.Column="0"/>
-                        <Label Text="{Binding Data.daily[0].temp.min, StringFormat='↓ {0}°C'}"
+                            <Label Text="{Binding Data.daily[0].temp.min, StringFormat='↓ {0}°C'}"
                            HorizontalTextAlignment="Start"
                            FontSize="Medium"
                            TextColor="White"
                            Grid.Column="1"/>
-                    </Grid>
-                    <Frame CornerRadius="10" HeightRequest="200" Padding="2">
-                        <ScrollView Orientation="Both" HorizontalScrollBarVisibility="Always">
-                            <StackLayout Orientation="Horizontal"
-                                         HorizontalOptions="Center">
-                                <StackLayout WidthRequest="90">
-                                    <Label Text="{Binding Data.hourly[0].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
-                                    <Image Source="{Binding Data.hourly[0].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                                    <Label Text="{Binding Data.hourly[0].temp, StringFormat=' {0}°'}" />
-                                </StackLayout>
-
-                                <StackLayout WidthRequest="90">
-                                    <Label Text="{Binding Data.hourly[1].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
-                                    <Image Source="{Binding Data.hourly[1].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                                    <Label Text="{Binding Data.hourly[1].temp, StringFormat=' {0}°'}" />
-                                </StackLayout>
-                                <StackLayout WidthRequest="90">
-                                    <Label Text="{Binding Data.hourly[2].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
-                                    <Image Source="{Binding Data.hourly[2].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                                    <Label Text="{Binding Data.hourly[2].temp, StringFormat=' {0}°'}" />
-                                </StackLayout>
-                                <StackLayout WidthRequest="90">
-                                    <Label Text="{Binding Data.hourly[3].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
-                                    <Image Source="{Binding Data.hourly[3].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                                    <Label Text="{Binding Data.hourly[3].temp, StringFormat=' {0}°'}" />
-                                </StackLayout>
-                                <StackLayout WidthRequest="90">
-                                    <Label Text="{Binding Data.hourly[4].dt, Converter={StaticResource UnixToDateTimeConverter}}"/>
-                                    <Image Source="{Binding Data.hourly[4].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
-                                    <Label Text="{Binding Data.hourly[4].temp, StringFormat=' {0}°'}" />
-                                </StackLayout>
+                        </Grid>
+                        <Frame CornerRadius="10"
+                           HeightRequest="200"
+                           Padding="2"
+                           BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
+                           Opacity="0.5">
+                            <StackLayout Orientation="Vertical">
+                                <Label
+                                Text="HOURLY FORECAST"
+                                TextColor="White"
+                                Margin="10, 10, 0, 0"></Label>
+                                <ScrollView Orientation="Both" HorizontalScrollBarVisibility="Always">
+                                    <StackLayout Orientation="Horizontal"
+                                         HorizontalOptions="Center"
+                                         Margin="0,10,0,0">
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.hourly[0].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.hourly[0].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.hourly[0].temp, StringFormat=' {0}°'}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.hourly[1].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.hourly[1].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.hourly[1].temp, StringFormat=' {0}°'}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.hourly[2].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.hourly[2].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.hourly[2].temp, StringFormat=' {0}°'}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.hourly[3].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.hourly[3].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.hourly[3].temp, StringFormat=' {0}°'}" 
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.hourly[4].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.hourly[4].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.hourly[4].temp, StringFormat=' {0}°'}" 
+                                           TextColor="White"
+                                           HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ScrollView>
                             </StackLayout>
-                        </ScrollView>
-                    </Frame>
-                </StackLayout>
-            </Frame>
-        </StackLayout>
+                        </Frame>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
         </ScrollView>
     </Grid>
 </ContentPage>
