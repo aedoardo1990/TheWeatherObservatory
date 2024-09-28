@@ -45,7 +45,8 @@
                         <Label Text="{Binding Data.current.dt, Converter={StaticResource UnixToDateTimeConverter}}"
                            HorizontalTextAlignment="Left"
                            FontSize="20"
-                           TextColor="White"/>
+                           TextColor="White"
+                           Opacity="0.5"/>
                         <Image Source="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
                         <Label Text="{Binding Data.current.temp, StringFormat='{0}°'}"
                            HorizontalTextAlignment="Left"
@@ -56,7 +57,7 @@
                            FontSize="Title"
                            TextColor="White"
                            HorizontalTextAlignment="Left"/>
-                        <Grid Margin="0,2,0,25">
+                        <Grid Margin="0,0,0,25">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="90"></ColumnDefinition>
                                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -77,6 +78,7 @@
                            Padding="2"
                            BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                            Opacity="0.5">
+                            <!--.HOURLY FORECAST-->
                             <StackLayout Orientation="Vertical">
                                 <Label
                                 Text="HOURLY FORECAST"
@@ -135,6 +137,87 @@
                                 </ScrollView>
                             </StackLayout>
                         </Frame>
+                        <Frame CornerRadius="10"
+                               HeightRequest="280"
+                               Padding="2"
+                               BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
+                               Opacity="0.5"
+                               Margin="0,15,0,0">
+                            <!--.DAILY FORECAST-->
+                            <StackLayout Orientation="Vertical">
+                                <Label
+                                    Text="DAILY FORECAST"
+                                    TextColor="White"
+                                    Margin="10, 10, 0, 0"></Label>
+                                <ScrollView Orientation="Both" HorizontalScrollBarVisibility="Always">
+                                    <StackLayout Orientation="Horizontal"
+                                                 HorizontalOptions="Center"
+                                                 Margin="0,10,0,0">
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.daily[0].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.daily[0].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.daily[0].temp.max, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Label Text="{Binding Data.daily[0].temp.min, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.daily[1].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.daily[1].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.daily[1].temp.max, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Label Text="{Binding Data.daily[1].temp.min, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                        </StackLayout>
+                                        <StackLayout WidthRequest="90">
+                                            <Label Text="{Binding Data.daily[2].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Image Source="{Binding Data.daily[2].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                            <Label Text="{Binding Data.daily[2].temp.max, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                            <Label Text="{Binding Data.daily[2].temp.min, StringFormat=' {0}°'}"
+                                                   TextColor="White"
+                                                   HorizontalOptions="Center"/>
+                                    </StackLayout>
+                                    <StackLayout WidthRequest="90">
+                                        <Label Text="{Binding Data.daily[3].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                        <Image Source="{Binding Data.daily[3].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                        <Label Text="{Binding Data.daily[3].temp.max, StringFormat=' {0}°'}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                        <Label Text="{Binding Data.daily[3].temp.min, StringFormat=' {0}°'}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                    </StackLayout>
+                                    <StackLayout WidthRequest="90">
+                                        <Label Text="{Binding Data.daily[4].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                        <Image Source="{Binding Data.daily[4].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
+                                        <Label Text="{Binding Data.daily[4].temp.max, StringFormat=' {0}°'}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                        <Label Text="{Binding Data.daily[4].temp.min, StringFormat=' {0}°'}"
+                                               TextColor="White"
+                                               HorizontalOptions="Center"/>
+                                    </StackLayout>
+                            </StackLayout>
+                                </ScrollView>
+                            </StackLayout>
+                        </Frame>
+
                     </StackLayout>
                 </Frame>
             </StackLayout>
