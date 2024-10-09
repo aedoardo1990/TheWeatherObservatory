@@ -16,7 +16,7 @@ namespace The_Weather_Observatory
 
         protected override void OnStart()
         {
-            // Call the async method to store the API key
+            // Call the async method to store the API key //
             // _ = StoreApiKeyAsync();
         }
 
