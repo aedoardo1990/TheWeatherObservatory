@@ -45,6 +45,19 @@ namespace The_Weather_Observatory.ViewModels
         // command to get weather by GPS location
         public ICommand GetCurrentLocationWeatherCommand { get; set; }
 
+        // to invoke permission request on main thread
+        private Task<Location> GetLastKnownLocation()
+        {
+            var locationTaskCompletionSource = new TaskCompletionSource<Location>();
+
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                locationTaskCompletionSource.SetResult(await Geolocation.GetLastKnownLocationAsync());
+            });
+
+            return locationTaskCompletionSource.Task;
+        }
+
         public MainPageViewModel()
         {
             SearchCommand = new Command<string>(async (searchTerm) => await SearchLocation(searchTerm));
@@ -90,7 +103,7 @@ namespace The_Weather_Observatory.ViewModels
 
             try
             {
-                var location = await Geolocation.GetLastKnownLocationAsync();
+                var location = await GetLastKnownLocation().ConfigureAwait(false);
                 if (location == null)
                 {
                     location = await Geolocation.GetLocationAsync(new GeolocationRequest(GeolocationAccuracy.Medium, TimeSpan.FromSeconds(10)));
