@@ -10,6 +10,7 @@
             <converters:TextToImageConverter x:Key="TextToImageConverter"></converters:TextToImageConverter>
             <converters:TextToColorConverter x:Key="TextToColorConverter"></converters:TextToColorConverter>
             <converters:UnixToDateTimeConverter x:Key="UnixToDateTimeConverter"></converters:UnixToDateTimeConverter>
+            <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"></converters:BoolToVisibilityConverter>
         </ResourceDictionary>
     </ContentPage.Resources>
     <Grid BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}">
@@ -25,6 +26,12 @@
                            Placeholder="Enter location or address:">
                     </SearchBar>
                 </Frame>
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                   IsVisible="{Binding IsLoading}"
+                   Color="Black"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Center"
+                   Margin="0,160,0,0"/>
 
                 <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
                     CornerRadius="10"
