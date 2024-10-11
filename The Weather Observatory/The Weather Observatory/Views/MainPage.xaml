@@ -31,7 +31,9 @@
                    Color="Black"
                    HorizontalOptions="Center"
                    VerticalOptions="Center"
-                   Margin="0,160,0,0"/>
+                   HeightRequest="80"
+                   WidthRequest="80"
+                   Margin="0,310,0,0"/>
 
                 <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
                     CornerRadius="10"
@@ -40,6 +42,7 @@
             <Label x:Name="resultLocation"/>-->
 
                 <Frame Margin="10"
+                   IsVisible="{Binding IsNotLoading}"
                    BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
                    VerticalOptions="FillAndExpand"
                    CornerRadius="10"
@@ -84,7 +87,7 @@
                            HeightRequest="200"
                            Padding="2"
                            BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
-                           Opacity="0.5">
+                           Opacity="1">
                             <!--.HOURLY FORECAST-->
                             <StackLayout Orientation="Vertical">
                                 <Label
@@ -148,7 +151,7 @@
                                HeightRequest="280"
                                Padding="2"
                                BackgroundColor="{Binding Data.current.weather[0].icon, Converter={StaticResource TextToColorConverter}}"
-                               Opacity="0.5"
+                               Opacity="1"
                                Margin="0,15,0,0">
                             <!--.DAILY FORECAST-->
                             <StackLayout Orientation="Vertical">

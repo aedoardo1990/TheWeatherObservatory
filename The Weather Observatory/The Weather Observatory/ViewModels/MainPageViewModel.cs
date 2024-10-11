@@ -39,6 +39,17 @@ namespace The_Weather_Observatory.ViewModels
             }
         }
 
+        private bool _isNotLoading;
+        public bool IsNotLoading 
+        {
+            get => _isNotLoading;
+            set
+            {
+                _isNotLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
         // command to get weather by location
         public ICommand SearchCommand { get; set; }
 
@@ -74,6 +85,7 @@ namespace The_Weather_Observatory.ViewModels
                 return;
 
             IsLoading = true;
+            IsNotLoading = false;
 
             try
             {
@@ -94,12 +106,14 @@ namespace The_Weather_Observatory.ViewModels
             finally
             {
                 IsLoading = false;
+                IsNotLoading = true;
             }
         }
 
         public async Task GetCurrentLocationWeather()
         {
             IsLoading = true;
+            IsNotLoading = false;
 
             try
             {
@@ -125,6 +139,7 @@ namespace The_Weather_Observatory.ViewModels
             finally
             {
                 IsLoading = false;
+                IsNotLoading = true;
             }
         }
 
