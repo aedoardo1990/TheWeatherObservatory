@@ -26,14 +26,16 @@
                            Placeholder="Enter location or address:">
                     </SearchBar>
                 </Frame>
-                <ActivityIndicator IsRunning="{Binding IsLoading}"
-                   IsVisible="{Binding IsLoading}"
-                   Color="Black"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Center"
-                   HeightRequest="80"
-                   WidthRequest="80"
-                   Margin="0,310,0,0"/>
+
+                <Image 
+                    Source="FadingSunRays.gif"
+                    IsAnimationPlaying="True"
+                    IsVisible="{Binding IsLoading}"
+                    IsEnabled="True"
+                    WidthRequest="120"
+                    HeightRequest="120"
+                    HorizontalOptions="CenterAndExpand" 
+                    VerticalOptions="CenterAndExpand"/>
 
                 <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
                     CornerRadius="10"
@@ -108,7 +110,7 @@
                                            HorizontalOptions="Center"/>
                                         </StackLayout>
                                         <StackLayout WidthRequest="90">
-                                            <Label Text="{Binding Data.hourly[1].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                            <Label Text="{Binding Data.hourly[1].dt, Converter={StaticResource UnixToDateTimeConverter}, StringFormat='{0:HH},{0:mm}'}"
                                            TextColor="White"
                                            HorizontalOptions="Center"/>
                                             <Image Source="{Binding Data.hourly[1].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>
@@ -164,7 +166,7 @@
                                                  HorizontalOptions="Center"
                                                  Margin="0,10,0,0">
                                         <StackLayout WidthRequest="90">
-                                            <Label Text="{Binding Data.daily[0].dt, Converter={StaticResource UnixToDateTimeConverter}}"
+                                            <Label Text="{Binding Data.daily[0].dt, Converter={StaticResource UnixToDateTimeConverter}, StringFormat='{0:M},{0:yyyy}'}"
                                                    TextColor="White"
                                                    HorizontalOptions="Center"/>
                                             <Image Source="{Binding Data.daily[0].weather[0].icon, Converter={StaticResource TextToImageConverter}}"></Image>

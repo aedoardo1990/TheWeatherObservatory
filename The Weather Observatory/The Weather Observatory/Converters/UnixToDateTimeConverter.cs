@@ -14,7 +14,7 @@ namespace The_Weather_Observatory.Converters
             string unixTimeStamp = value.ToString();
             DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
             dateTime = dateTime.AddSeconds(double.Parse(unixTimeStamp)).ToLocalTime();
-            return dateTime.ToString("HH:mm");
+            return dateTime.ToString();
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
