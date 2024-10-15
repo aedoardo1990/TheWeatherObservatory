@@ -26,7 +26,7 @@
                            Placeholder="Enter location or address:">
                     </SearchBar>
                 </Frame>
-
+                
                 <Image 
                     Source="FadingSunRays.gif"
                     IsAnimationPlaying="True"
@@ -36,6 +36,7 @@
                     HeightRequest="120"
                     HorizontalOptions="CenterAndExpand" 
                     VerticalOptions="CenterAndExpand"/>
+
 
                 <!--<Button Text="Get Current Weather" Command="{Binding GetCurrentLocationWeatherCommand}"
                     CornerRadius="10"
