@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:The_Weather_Observatory"
+             x:Class="The_Weather_Observatory.SavedLocationsPage"
+             Title="Searched Locations">
+    <ContentPage.Content>
+        <RefreshView Command="{Binding RefreshCommand}">
+            <CollectionView ItemsSource="{Binding Locations}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout Padding="10">
+                            <Label Text="{Binding Name}" FontSize="Medium"/>
+                            <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:g}'}" 
+                                   FontSize="Small" TextColor="Gray"/>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+    </ContentPage.Content>
+</ContentPage>

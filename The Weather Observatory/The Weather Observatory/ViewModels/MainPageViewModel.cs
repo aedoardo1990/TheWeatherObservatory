@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using The_Weather_Observatory.Models;
+using The_Weather_Observatory.Services;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 
@@ -79,6 +80,8 @@ namespace The_Weather_Observatory.ViewModels
             Task.Run(async () => await GetCurrentLocationWeather());
         }
 
+        private readonly LocationService _locationService = new LocationService();
+
         private async Task SearchLocation(string searchTerm)
         {
             if (string.IsNullOrEmpty(searchTerm))
@@ -98,6 +101,17 @@ namespace The_Weather_Observatory.ViewModels
                 {
                     await GetWeatherData(lat, lon);
                 }
+
+                // After successful weather search, save the location
+                var savedLocation = new SaveLocation
+                {
+                    Name = searchTerm,
+                    Latitude = lat,  // Get these values from your weather API
+                    Longitude = lon,
+                    LastSearched = DateTime.Now
+                };
+                await _locationService.StoreLocationAsync(savedLocation);
+
             }
             catch (Exception ex)
             {
