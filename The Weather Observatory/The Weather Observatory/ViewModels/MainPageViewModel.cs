@@ -99,6 +99,7 @@ namespace The_Weather_Observatory.ViewModels
             try
             {
                 var input = searchTerm as string;
+                searchTerm = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(searchTerm.ToLower()); // to save locations with first letter uppercase and rest lowercase
                 var locations = await Geocoding.GetLocationsAsync(input);
                 var location = locations?.FirstOrDefault();
                 double lat = location.Latitude;
