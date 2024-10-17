@@ -12,19 +12,12 @@ namespace The_Weather_Observatory
 {
     public partial class SavedLocationsPage : ContentPage
     {
-        private SavedLocationsPageViewModel _viewModel;
 
-        public SavedLocationsPage(LocationService locationService)
+        public SavedLocationsPage()
         {
             InitializeComponent();
-            _viewModel = new SavedLocationsPageViewModel(locationService);
-            BindingContext = _viewModel;
+            BindingContext = new SavedLocationsPageViewModel(new LocationService());
         }
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await _viewModel.LoadLocationsAsync();
-        }
     }
 }

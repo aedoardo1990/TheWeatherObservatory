@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
@@ -12,25 +13,32 @@ namespace The_Weather_Observatory.Services
     {
         private const string LocationsKey = "SearchedLocations";
 
-        public async Task StoreLocationAsync(SaveLocation location)
+        // Store a location asynchronously
+        public async Task StoreLocationAsync(SaveLocation savedLocation)
         {
-            var locations = await GetLocationsAsync();
+            var savedLocations = await GetLocationsAsync();
 
-            // Check if location already exists
-            var existingLocation = locations.Find(l => l.Name == location.Name);
+            // Check if the location already exists
+            var existingLocation = savedLocations.FirstOrDefault(l => l.Name == savedLocation.Name);
             if (existingLocation != null)
             {
-                existingLocation.LastSearched = DateTime.Now;
+                existingLocation.LastSearched = DateTime.Now; // Update the last searched time
             }
             else
             {
-                locations.Add(location);
+                savedLocation.LastSearched = DateTime.Now; // Set the current time if it's a new location
+                savedLocations.Add(savedLocation);
             }
 
-            var json = JsonConvert.SerializeObject(locations);
+            // Sort by LastSearched descending to keep the most recent on top
+            savedLocations = savedLocations.OrderByDescending(l => l.LastSearched).ToList();
+
+            // Save the list back to secure storage
+            var json = JsonConvert.SerializeObject(savedLocations);
             await SecureStorage.SetAsync(LocationsKey, json);
         }
 
+        // Retrieve the saved locations asynchronously
         public async Task<List<SaveLocation>> GetLocationsAsync()
         {
             var json = await SecureStorage.GetAsync(LocationsKey);

@@ -51,6 +51,11 @@
                    CornerRadius="10"
                    BorderColor="Transparent">
                     <StackLayout>
+                        <Button Text="Saved Locations"
+                                Command="{Binding NavigateToSavedLocationsCommand}"
+                                CornerRadius="10"
+                                Margin="22,10,22,10"
+                                Padding="0"/>
                         <Label Text="{Binding Data.timezone, StringFormat='⚲ {0}'}"
                            HorizontalTextAlignment="Left"
                            FontSize="35"

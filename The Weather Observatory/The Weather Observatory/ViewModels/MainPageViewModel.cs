@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.CodeAnalysis;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -58,9 +59,9 @@ namespace The_Weather_Observatory.ViewModels
         public ICommand GetCurrentLocationWeatherCommand { get; set; }
 
         // to invoke permission request on main thread
-        private Task<Location> GetLastKnownLocation()
+        private Task<Xamarin.Essentials.Location> GetLastKnownLocation()
         {
-            var locationTaskCompletionSource = new TaskCompletionSource<Location>();
+            var locationTaskCompletionSource = new TaskCompletionSource<Xamarin.Essentials.Location>();
 
             Device.BeginInvokeOnMainThread(async () =>
             {
@@ -70,17 +71,22 @@ namespace The_Weather_Observatory.ViewModels
             return locationTaskCompletionSource.Task;
         }
 
+        // to get saved locations 
+        public ICommand NavigateToSavedLocationsCommand { get; private set; }
+
+        private readonly LocationService _locationService = new LocationService();
+
         public MainPageViewModel()
         {
             SearchCommand = new Command<string>(async (searchTerm) => await SearchLocation(searchTerm));
 
             GetCurrentLocationWeatherCommand = new Command(async () => await GetCurrentLocationWeather());
 
+            NavigateToSavedLocationsCommand = new Command(async () => await NavigateToSavedLocations());
+
             // this allows the app to retrive weather data immediately for current location
             Task.Run(async () => await GetCurrentLocationWeather());
         }
-
-        private readonly LocationService _locationService = new LocationService();
 
         private async Task SearchLocation(string searchTerm)
         {
@@ -180,6 +186,11 @@ namespace The_Weather_Observatory.ViewModels
             var jsonResult = await response.Content.ReadAsStringAsync();
             var result = JsonConvert.DeserializeObject<WeatherData>(jsonResult);
             Data = result;
+        }
+
+        private async Task NavigateToSavedLocations()
+        {
+            await Application.Current.MainPage.Navigation.PushAsync(new SavedLocationsPage());
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

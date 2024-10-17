@@ -3,20 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:The_Weather_Observatory"
              x:Class="The_Weather_Observatory.SavedLocationsPage"
-             Title="Searched Locations">
+             Title="Saved Locations">
+
     <ContentPage.Content>
-        <RefreshView Command="{Binding RefreshCommand}">
-            <CollectionView ItemsSource="{Binding Locations}">
-                <CollectionView.ItemTemplate>
+        <StackLayout Padding="10">
+            <!-- ListView to display the saved locations -->
+            <ListView x:Name="LocationsListView"
+                      ItemsSource="{Binding SavedLocations}"
+                      IsPullToRefreshEnabled="True"
+                      RefreshCommand="{Binding RefreshCommand}"
+                      IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackLayout Padding="10">
-                            <Label Text="{Binding Name}" FontSize="Medium"/>
-                            <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:g}'}" 
-                                   FontSize="Small" TextColor="Gray"/>
-                        </StackLayout>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Padding="10">
+                                <Label Text="{Binding Name}" FontSize="Medium" />
+                                <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:MM/dd/yyyy HH:mm}'}" FontSize="Small" TextColor="Gray" />
+                                <Label Text="{Binding Latitude, StringFormat='Latitude: {0}'}" FontSize="Small" />
+                                <Label Text="{Binding Longitude, StringFormat='Longitude: {0}'}" FontSize="Small" />
+                            </StackLayout>
+                        </ViewCell>
                     </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
-        </RefreshView>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
     </ContentPage.Content>
 </ContentPage>
