@@ -47,5 +47,14 @@ namespace The_Weather_Observatory.Services
 
             return JsonConvert.DeserializeObject<List<SaveLocation>>(json);
         }
+
+        // Delete a saved location
+        public async Task DeleteLocationAsync(string locationName)
+        {
+            var savedLocations = await GetLocationsAsync();
+            savedLocations.RemoveAll(l => l.Name == locationName);
+            var json = JsonConvert.SerializeObject(savedLocations);
+            await SecureStorage.SetAsync(LocationsKey, json);
+        }
     }
 }

@@ -2,30 +2,53 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:The_Weather_Observatory"
+             xmlns:viewmodels="clr-namespace:The_Weather_Observatory.ViewModels"
              x:Class="The_Weather_Observatory.SavedLocationsPage"
              Title="Saved Locations">
-
     <ContentPage.Content>
         <StackLayout Padding="10">
-            <!-- ListView to display the saved locations -->
-            <ListView x:Name="LocationsListView"
-                      ItemsSource="{Binding SavedLocations}"
-                      IsPullToRefreshEnabled="True"
-                      RefreshCommand="{Binding RefreshCommand}"
-                      IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
-                            <StackLayout Orientation="Vertical" Padding="10">
-                                <Label Text="{Binding Name}" FontSize="Medium" />
-                                <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:MM/dd/yyyy HH:mm}'}" FontSize="Small" TextColor="Gray" />
-                                <Label Text="{Binding Latitude, StringFormat='Latitude: {0}'}" FontSize="Small" />
-                                <Label Text="{Binding Longitude, StringFormat='Longitude: {0}'}" FontSize="Small" />
-                            </StackLayout>
-                        </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+            <Button Text="Add Location" 
+                    Command="{Binding AddLocationCommand}"
+                    Margin="0,0,0,10"/>
+
+            <RefreshView Command="{Binding RefreshCommand}"
+                         IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                <CollectionView ItemsSource="{Binding SavedLocations}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <SwipeView>
+                                <SwipeView.RightItems>
+                                    <SwipeItems>
+                                        <SwipeItem Text="Delete" 
+                                                   Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SavedLocationsPageViewModel}}, Path=DeleteLocationCommand}"
+                                                   CommandParameter="{Binding Name}"
+                                                   BackgroundColor="Red" />
+                                    </SwipeItems>
+                                </SwipeView.RightItems>
+                                <Frame Padding="10" Margin="0,5">
+                                    <StackLayout>
+                                        <Label Text="{Binding Name}" 
+                                               FontSize="Medium">
+                                            <Label.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodels:SavedLocationsPageViewModel}}, Path=SelectLocationCommand}"
+                                                    CommandParameter="{Binding Name}" />
+                                            </Label.GestureRecognizers>
+                                        </Label>
+                                        <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:MM/dd/yyyy HH:mm}'}" 
+                                               FontSize="Small" 
+                                               TextColor="Gray" />
+                                        <Label Text="{Binding Latitude, StringFormat='Latitude: {0}'}" 
+                                               FontSize="Small" />
+                                        <Label Text="{Binding Longitude, StringFormat='Longitude: {0}'}" 
+                                               FontSize="Small" />
+                                    </StackLayout>
+                                </Frame>
+                            </SwipeView>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
