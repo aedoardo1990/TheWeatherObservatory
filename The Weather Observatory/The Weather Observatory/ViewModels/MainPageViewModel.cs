@@ -120,9 +120,9 @@ namespace The_Weather_Observatory.ViewModels
                 await _locationService.StoreLocationAsync(savedLocation);
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: Input is invalid", "OK");
             }
             finally
             {
@@ -164,7 +164,7 @@ namespace The_Weather_Observatory.ViewModels
             }
         }
 
-        private async Task GetWeatherData(double lat, double lon)
+        internal async Task GetWeatherData(double lat, double lon)
         {
             // to get ApiKey
             string apiKey = await SecureStorage.GetAsync("ApiKey");
@@ -175,6 +175,7 @@ namespace The_Weather_Observatory.ViewModels
             }
             string url = $"https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={apiKey}&units=metric&exclude=minutely";
             await GetData(url);
+            OnPropertyChanged(nameof(Data)); // Notify the UI of the change
         }
 
         private async Task GetData(string url)

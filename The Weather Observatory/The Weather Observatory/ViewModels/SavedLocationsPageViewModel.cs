@@ -105,9 +105,21 @@ namespace The_Weather_Observatory.ViewModels
             var selectedLocation = SavedLocations.FirstOrDefault(l => l.Name == locationName);
             if (selectedLocation != null)
             {
-                // Here you would typically navigate back to the main page and display weather for this location
-                // For now, let's just show an alert
-                await Application.Current.MainPage.DisplayAlert("Location Selected", $"You selected {selectedLocation.Name}", "OK");
+                // Get the MainPage instance
+                var mainPage = Application.Current.MainPage;
+                if (mainPage != null)
+                {
+                    // Get the MainPageViewModel instance from the BindingContext of the MainPage
+                    var mainPageViewModel = mainPage.BindingContext as MainPageViewModel;
+                    if (mainPageViewModel != null)
+                    {
+                        // Call the GetWeatherData method in MainPageViewModel
+                        await mainPageViewModel.GetWeatherData(selectedLocation.Latitude, selectedLocation.Longitude);
+
+                        // Navigate back to the MainPage
+                        await Application.Current.MainPage.Navigation.PopAsync();
+                    }
+                }
             }
         }
 

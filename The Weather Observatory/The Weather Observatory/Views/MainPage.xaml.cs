@@ -18,7 +18,7 @@ namespace The_Weather_Observatory
         {
             InitializeComponent();
             //_viewModel = new MainPageViewModel();
-            this.BindingContext = new MainPageViewModel();
+            BindingContext = new MainPageViewModel();
         }
 
         //async void Button_Clicked(System.Object sender, System.EventArgs e)
