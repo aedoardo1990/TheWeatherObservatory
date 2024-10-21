@@ -79,9 +79,9 @@ namespace The_Weather_Observatory.ViewModels
             {
                 var newLocation = new SaveLocation
                 {
-                    Name = locationName,
+                    Name = System.Threading.Thread.CurrentThread.CurrentCulture.TextInfo.ToTitleCase(locationName.ToLower()),
                     LastSearched = DateTime.Now
-                    // You might want to add logic to get latitude and longitude here
+                    // You might want to add logic to get current weather icon and temperature here
                 };
                 await _locationService.StoreLocationAsync(newLocation);
                 await LoadLocationsAsync(); // Refresh the list

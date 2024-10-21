@@ -38,10 +38,6 @@
                                         <Label Text="{Binding LastSearched, StringFormat='Last searched: {0:MM/dd/yyyy HH:mm}'}" 
                                                FontSize="Small" 
                                                TextColor="Gray" />
-                                        <Label Text="{Binding Latitude, StringFormat='Latitude: {0}'}" 
-                                               FontSize="Small" />
-                                        <Label Text="{Binding Longitude, StringFormat='Longitude: {0}'}" 
-                                               FontSize="Small" />
                                     </StackLayout>
                                 </Frame>
                             </SwipeView>
