@@ -49,12 +49,16 @@ namespace The_Weather_Observatory.Services
         }
 
         // Delete a saved location
-        public async Task DeleteLocationAsync(string locationName)
+        public async Task DeleteLocationAsync(SaveLocation locationToDelete)
         {
             var savedLocations = await GetLocationsAsync();
-            savedLocations.RemoveAll(l => l.Name == locationName);
-            var json = JsonConvert.SerializeObject(savedLocations);
-            await SecureStorage.SetAsync(LocationsKey, json);
+            var locationToRemove = savedLocations.FirstOrDefault(l => l.Name == locationToDelete.Name);
+            if (locationToRemove != null)
+            {
+                savedLocations.Remove(locationToRemove);
+                var json = JsonConvert.SerializeObject(savedLocations);
+                await SecureStorage.SetAsync(LocationsKey, json);
+            }
         }
     }
 }

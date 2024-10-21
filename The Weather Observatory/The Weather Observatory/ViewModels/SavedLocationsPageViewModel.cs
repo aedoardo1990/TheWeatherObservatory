@@ -52,11 +52,23 @@ namespace The_Weather_Observatory.ViewModels
             try
             {
                 var locations = await _locationService.GetLocationsAsync();
-                SavedLocations.Clear(); // Clear the existing locations before loading
 
+                // Update the SavedLocations collection to match the locations from the service
+                SavedLocations.Clear();
                 foreach (var location in locations)
                 {
-                    SavedLocations.Add(location); // Add the locations
+                    if (!SavedLocations.Contains(location))
+                    {
+                        SavedLocations.Add(location);
+                    }
+                }
+
+                // Remove any locations from SavedLocations that are not in the service's list
+                var locationNames = locations.Select(l => l.Name);
+                var locationsToRemove = SavedLocations.Where(l => !locationNames.Contains(l.Name)).ToList();
+                foreach (var locationToRemove in locationsToRemove)
+                {
+                    SavedLocations.Remove(locationToRemove);
                 }
             }
             catch (Exception ex)
@@ -101,17 +113,23 @@ namespace The_Weather_Observatory.ViewModels
 
         private async void DeleteLocationCommandHandler(string locationName)
         {
-            var locationToDelete = SavedLocations.FirstOrDefault(l => l.Name == locationName);
-            if (locationToDelete != null)
+            try
             {
-                bool answer = await Application.Current.MainPage.DisplayAlert("Confirm Deletion", $"Are you sure you want to delete {locationToDelete.Name}?", "Yes", "No");
-                if (answer)
+                var locationToDelete = SavedLocations.FirstOrDefault(l => l.Name == locationName);
+                if (locationToDelete != null)
                 {
-                    SavedLocations.Remove(locationToDelete);
-                    // Update the stored locations
-                    await _locationService.StoreLocationAsync(new SaveLocation()); // This will trigger saving the current list
-                    await LoadLocationsAsync(); // Refresh the list
+                    bool answer = await Application.Current.MainPage.DisplayAlert("Confirm Deletion", $"Are you sure you want to delete {locationToDelete.Name}?", "Yes", "No");
+                    if (answer)
+                    {
+                        SavedLocations.Remove(locationToDelete);
+                        // Update the stored locations
+                        await _locationService.DeleteLocationAsync(locationToDelete);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                await Application.Current.MainPage.DisplayAlert("Error", $"Failed to delete location: {ex.Message}", "OK");
             }
         }
 
