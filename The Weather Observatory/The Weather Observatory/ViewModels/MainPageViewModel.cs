@@ -120,9 +120,9 @@ namespace The_Weather_Observatory.ViewModels
                 await _locationService.StoreLocationAsync(savedLocation);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: Input is invalid", "OK");
+                await Application.Current.MainPage.DisplayAlert("Error", $"An error occurred: {ex.Message}", "OK");
             }
             finally
             {
